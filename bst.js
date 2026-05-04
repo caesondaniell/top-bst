@@ -29,3 +29,10 @@ class Tree {
     return node
   }
 }
+
+function prettyPrint (node, prefix = '', isLeft = true) {
+  if (node === null || node === undefined) return
+  prettyPrint(node.rightChild, `${prefix}${isLeft ? '│   ' : '    '}`, false)
+  console.log(`${prefix}${isLeft ? '└── ' : '┌── '}${node.data}`)
+  prettyPrint(node.leftChild, `${prefix}${isLeft ? '    ' : '│   '}`, true)
+}
