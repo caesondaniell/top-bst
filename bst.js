@@ -29,7 +29,7 @@ class Tree {
     return node
   }
 
-  #levelOrderTraversal() {
+  #getValues() {
     const nodes = [this.root]
     const values = []
     while (nodes.length > 0) {
@@ -41,8 +41,20 @@ class Tree {
   }
 
   includes (value) {
-    const values = this.#levelOrderTraversal()
+    const values = this.#getValues()
     return values.includes(value)
+  }
+
+  insert (value) {
+    if (this.includes(value)) return
+    let child, current, direction, next
+    while (next !== null) {
+      current = current === undefined ? this.root : next
+      direction = value < current.data ? 'left' : 'right'
+      child = direction + 'Child'
+      next = current[child]
+    }
+    current[child] = new Node(value)
   }
 
   prettyPrint (node, prefix = '', isLeft = true) {
