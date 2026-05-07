@@ -110,13 +110,18 @@ class Tree {
     this.forEachInOrder(callback, node.rightChild)
   }
 
-  height (value, start = this.root) {
+  height (value) {
     if (!this.includes(value)) return
-    let node = start
+    let node = this.root
     while (node.data !== value) {
       node = value < node.data ? node.leftChild : node.rightChild
     }
-    const height = Math.floor(Math.log2(this.valuesLevelOrder(node).length))
+    const farLeaf = this.valuesLevelOrder(node).at(-1)
+    let height = 0
+    while (node.data !== farLeaf) {
+      node = farLeaf < node.data ? node.leftChild : node.rightChild
+      height++
+    }
     return height
   }
 
@@ -144,6 +149,25 @@ class Tree {
     current[child] = new Node(value)
   }
 
+  isBalanced () {
+    let balanced = true
+    const values = this.valuesLevelOrder()
+    values.forEach((value) => {
+      let node = this.root
+      while (node.data !== value) {
+        node = value < node.data ? node.leftChild : node.rightChild
+      }
+      const heightL = node.leftChild === null
+        ? -1
+        : this.height(node.leftChild.data)
+      const heightR = node.rightChild === null
+        ? -1
+        : this.height(node.rightChild.data)
+      if (Math.abs(heightL - heightR) > 1) balanced = false
+    })
+    return balanced
+  }
+
   prettyPrint (node, prefix = '', isLeft = true) {
     if (node === null || node === undefined) return
     this.prettyPrint(
@@ -157,6 +181,11 @@ class Tree {
       , `${prefix}${isLeft ? '    ' : '│   '}`
       , true
     )
+  }
+
+  rebalance () {
+    const values = this.valuesInOrder()
+    this.root = this.#buildTree(values)
   }
 
   valuesInOrder (node = this.root, arr = []) {
