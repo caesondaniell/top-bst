@@ -223,3 +223,5 @@ class Tree {
     return arr
   }
 }
+
+export { Tree }
