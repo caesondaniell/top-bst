@@ -29,9 +29,37 @@ class Tree {
     return node
   }
 
-  includes (value) {
+  deleteItem (value, node = this.root) {
+    if (!this.includes(value, node)) return
+    let target = node
+    let parent, direction, child
+    while (target.data !== value) {
+      parent = target
+      direction = value < target.data ? 'left' : 'right'
+      child = direction + 'Child'
+      target = target[child]
+    }
+    if (target.leftChild === null && target.rightChild === null) {
+      parent[child] = null
+    } else if (target.leftChild !== null && target.rightChild !== null) {
+      const replacementValue = this.valuesInOrder(target.rightChild).at(0)
+      let replacementNode = target.rightChild
+      while (replacementNode.data !== replacementValue) {
+        replacementNode = replacementValue < replacementNode.data
+          ? replacementNode.leftChild
+          : replacementNode.rightChild
+      }
+      [target.data, replacementNode.data] = [replacementNode.data, target.data]
+      this.deleteItem(value, target.rightChild)
+    } else {
+      const kid = target.leftChild === null ? target.rightChild : target.leftChild
+      parent[child] = kid
+    }
+  }
+
+  includes (value, start = this.root) {
     let extant = false
-    let node = this.root
+    let node = start
     while (node !== null) {
       if (value === node.data) {
         extant = true
