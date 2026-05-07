@@ -57,6 +57,17 @@ class Tree {
     }
   }
 
+  depth (value) {
+    if (!this.includes(value)) return
+    let level = 0
+    let node = this.root
+    while (node.data !== value) {
+      node = value < node.data ? node.leftChild : node.rightChild
+      level++
+    }
+    return level
+  }
+
   forEachInOrder (callback, node = this.root) {
     if (typeof callback !== 'function') {
       throw new Error('Missing callback function.')
