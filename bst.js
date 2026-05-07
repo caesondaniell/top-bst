@@ -29,20 +29,16 @@ class Tree {
     return node
   }
 
-  #getValues() {
-    const nodes = [this.root]
-    const values = []
-    while (nodes.length > 0) {
-      if (nodes[0].leftChild !== null) nodes.push(nodes[0].leftChild)
-      if (nodes[0].rightChild !== null) nodes.push(nodes[0].rightChild)
-      values.push(nodes.shift().data)
-    }
-    return values
-  }
-
   includes (value) {
-    const values = this.#getValues()
-    return values.includes(value)
+    let extant = false
+    let node = this.root
+    while (node !== null) {
+      if (value === node.data) {
+        extant = true
+        return extant
+      } else node = value < node.data ? node.leftChild : node.rightChild
+    }
+    return extant
   }
 
   insert (value) {
