@@ -67,4 +67,39 @@ class Tree {
       , true
     )
   }
+
+  valuesInOrder (node = this.root, arr = []) {
+    if (node === null) return arr
+    this.valuesInOrder(node.leftChild, arr)
+    arr.push(node.data)
+    this.valuesInOrder(node.rightChild, arr)
+    return arr
+  }
+  
+  valuesLevelOrder () {
+    const nodes = [this.root]
+    const values = []
+    while (nodes.length > 0) {
+      if (nodes[0].leftChild !== null) nodes.push(nodes[0].leftChild)
+      if (nodes[0].rightChild !== null) nodes.push(nodes[0].rightChild)
+      values.push(nodes.shift().data)
+    }
+    return values
+  }
+
+  valuesPostOrder (node = this.root, arr = []) {
+    if (node === null) return arr
+    this.valuesPostOrder(node.leftChild, arr)
+    this.valuesPostOrder(node.rightChild, arr)
+    arr.push(node.data)
+    return arr
+  }
+
+  valuesPreOrder (node = this.root, arr = []) {
+    if (node === null) return arr
+    arr.push(node.data)
+    this.valuesPreOrder(node.leftChild, arr)
+    this.valuesPreOrder(node.rightChild, arr)
+    return arr
+  }
 }
