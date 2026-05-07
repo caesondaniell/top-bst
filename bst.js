@@ -57,6 +57,48 @@ class Tree {
     }
   }
 
+  forEachInOrder (callback, node = this.root) {
+    if (typeof callback !== 'function') {
+      throw new Error('Missing callback function.')
+    }
+    if (node === null) return
+    this.forEachInOrder(callback, node.leftChild)
+    callback(node.data)
+    this.forEachInOrder(callback, node.rightChild)
+  }
+
+  forEachLevelOrder (callback) {
+    if (typeof callback !== 'function') {
+      throw new Error('Missing callback function.')
+    }
+    const nodes = [this.root]
+    while (nodes.length > 0) {
+      if (nodes[0].leftChild !== null) nodes.push(nodes[0].leftChild)
+      if (nodes[0].rightChild !== null) nodes.push(nodes[0].rightChild)
+      callback(nodes.shift().data)
+    }
+  }
+
+  forEachPostOrder (callback, node = this.root) {
+    if (typeof callback !== 'function') {
+      throw new Error('Missing callback function.')
+    }
+    if (node === null) return
+    this.forEachInOrder(callback, node.leftChild)
+    this.forEachInOrder(callback, node.rightChild)
+    callback(node.data)
+  }
+
+  forEachPreOrder (callback, node = this.root) {
+    if (typeof callback !== 'function') {
+      throw new Error('Missing callback function.')
+    }
+    if (node === null) return
+    callback(node.data)
+    this.forEachInOrder(callback, node.leftChild)
+    this.forEachInOrder(callback, node.rightChild)
+  }
+
   includes (value, start = this.root) {
     let extant = false
     let node = start
