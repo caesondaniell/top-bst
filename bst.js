@@ -99,6 +99,16 @@ class Tree {
     this.forEachInOrder(callback, node.rightChild)
   }
 
+  height (value, start = this.root) {
+    if (!this.includes(value)) return
+    let node = start
+    while (node.data !== value) {
+      node = value < node.data ? node.leftChild : node.rightChild
+    }
+    const height = Math.floor(Math.log2(this.valuesLevelOrder(node).length))
+    return height
+  }
+
   includes (value, start = this.root) {
     let extant = false
     let node = start
