@@ -156,8 +156,8 @@ class Tree {
     return arr
   }
   
-  valuesLevelOrder () {
-    const nodes = [this.root]
+  valuesLevelOrder (start = this.root) {
+    const nodes = [start]
     const values = []
     while (nodes.length > 0) {
       if (nodes[0].leftChild !== null) nodes.push(nodes[0].leftChild)
